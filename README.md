@@ -49,7 +49,7 @@ docker run \
 
 ### Dataset file
 
-The [datasets.json](dataset.json) file contains parameters for all datasets that are described in the first edition of the book. Color maps have been inspired by another software package <https://symmetrichaos.sourceforge.net/> which is now unmaintained.
+The [datasets.json](datasets.json) file contains parameters for all datasets that are described in the first edition of the book. Color maps have been inspired by another software package <https://symmetrichaos.sourceforge.net/> which is now unmaintained.
 
 ### Possible future extensions
 
