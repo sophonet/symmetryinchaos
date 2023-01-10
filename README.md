@@ -27,24 +27,34 @@ The code uses the following external software packages:
 * nlohmann/json for json parsing <https://github.com/nlohmann/json>
 * jarro2783/cxxopts for command line parameters when building the native version <https://github.com/jarro2783/cxxopts>
 
+On MacOS, the three packages can be installed with
+
+```
+brew install sdl12-compat
+brew install nlohmann-json
+brew install cxxopts
+```
+
+On linux, these packages should be available in your distribution's package manager.
+
 ### Installation
 
-The single cpp source file can easily be compiled to a runtime executable, which is why build systems like CMake are not necessary:
+The single cpp source file can easily be compiled to a runtime executable, which is why build systems like CMake are not necessary, if the prerequisites are installed at default locations:
 
 ```
 g++ -o symmetryinchaos -std=c++14 -lSDL symmetryinchaos.cpp
-
 ```
 
-The WebAssembly for running the code in a website can be built using the [Emscripten](https://emscripten.org/) compiler, e.g. using docker with
+The WebAssembly for running the code in a website can be built using the [Emscripten](https://emscripten.org/) compiler, e.g. using docker, after cloning nlohmann/json with
 
 ```
+git clone --depth 1 https://github.com/nlohmann/json.git
 docker run \
   --rm \
   -v $(pwd):/src \
   -u $(id -u):$(id -g) \
   emscripten/emsdk \
-  emcc symmetryinchaos.cpp -o index.js
+  emcc symmetryinchaos.cpp -I json/include -O2 -sEXPORTED_FUNCTIONS=_main,_launch -sEXPORTED_RUNTIME_METHODS=ccall -o index.js
 ```
 
 ### Dataset file
