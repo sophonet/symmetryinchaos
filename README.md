@@ -6,7 +6,8 @@ by Michael Field and Martin Golubitsky.
 
 ![Example rendering of "Emperors Cloak"](docs/emperors_cloak.jpg)
 
-An webpage utilizing WebAssembly for rendering in the browser can be found HERE.
+An webpage utilizing WebAssembly for rendering in the browser can be found on the github
+page <https://sophonet.github.io/symmetryinchaos/>.
 
 ### Theory
 
