@@ -46,7 +46,7 @@
             }
         }
     
-        fetch("/datasets.json")
+        fetch("datasets.json")
         .then(res => res.json())
         .then(datasets => set_datasets(datasets))
         .catch(error => console.log(error));
