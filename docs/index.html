@@ -2,15 +2,16 @@
 <html>
 
 <head>
+    <title>Symmetry in Chaos</title>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 
-<body>
+<body style="background-color: #000;">
 
     <!-- Create the canvas that the C++ code will draw into -->
     <div id="params">
-        dataset <select name="dataset" id="dataset"></select><br>
+        <select name="dataset" id="dataset"></select><br>
     </div>
 
     <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
@@ -18,7 +19,12 @@
     <!-- Allow the C++ to access the canvas element --> 
     <script type='text/javascript'>
         var Module = {
-            canvas: (function() { return document.getElementById('canvas'); })()
+            canvas: (function() { return document.getElementById('canvas'); })(),
+            // Quick hack to wait until SDL surface has been prepared inside main()
+            onRuntimeInitialized: (function() { 
+                setTimeout(() => {
+                    Module.ccall('launch', null, ['string'],[JSON.stringify(symmetry_datasets[dropdown.value])]);
+                },500)})
         };
     </script>
     
