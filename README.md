@@ -27,7 +27,9 @@ The code uses the following external software packages:
 * nlohmann/json for json parsing <https://github.com/nlohmann/json>
 * jarro2783/cxxopts for command line parameters when building the native version <https://github.com/jarro2783/cxxopts>
 
-On MacOS, the three packages can be installed with
+#### Installing prerequisites for the native application
+
+* On MacOS, the three packages can be installed with [Homebrew](https://brew.sh):
 
 ```
 brew install sdl12-compat
@@ -35,7 +37,17 @@ brew install nlohmann-json
 brew install cxxopts
 ```
 
-On linux, these packages should be available in your distribution's package manager.
+* On linux, these packages should be available in your distribution's package manager.
+
+* All packages are also available in the [Conan center](https://conan.io/center).
+
+#### Installing prerequisites for WebAssembly.
+
+The installation description below uses [Emscripten](https://emscripten.org/) as a docker image, which already includes SDL. Furthermore, cxxopts for command line parameters are not needed for a browser application. The easiest way here to install nlohmann-json is to use git:
+
+```
+git clone --depth 1 https://github.com/nlohmann/json.git
+```
 
 ### Installation
 
@@ -48,13 +60,14 @@ g++ -o symmetryinchaos -std=c++14 -lSDL symmetryinchaos.cpp
 The WebAssembly for running the code in a website can be built using the [Emscripten](https://emscripten.org/) compiler, e.g. using docker, after cloning nlohmann/json with
 
 ```
-git clone --depth 1 https://github.com/nlohmann/json.git
 docker run \
   --rm \
   -v $(pwd):/src \
   -u $(id -u):$(id -g) \
   emscripten/emsdk \
-  emcc symmetryinchaos.cpp -I json/include -O2 -sEXPORTED_FUNCTIONS=_main,_launch -sEXPORTED_RUNTIME_METHODS=ccall -o index.js
+  emcc symmetryinchaos.cpp -I json/include -O2 \
+  -sEXPORTED_FUNCTIONS=_main,_launch \
+  -sEXPORTED_RUNTIME_METHODS=ccall -o index.js
 ```
 
 ### Dataset file
@@ -63,4 +76,4 @@ The [datasets.json](datasets.json) file contains parameters for all datasets tha
 
 ### Possible future extensions
 
-While the software is intended to have minimal dependencies and code size, the index.html file could be extended such that individual parameters for the images can be adjusted "live" with range controls, allowing the discovery of new patterns or patterns that are similar to the datasets of the book.
+While the software is intended to have minimal dependencies and code size, the index.html file could be extended such that individual parameters for the images can be adjusted "live" with range controls, allowing interactive discovery of new patterns or patterns that are similar to the datasets of the book.
