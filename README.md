@@ -1,10 +1,10 @@
-![Symmetry in Chaos - Emperor's Cloak](docs/emperors_cloak.jpg)
-
 # Symmetry in Chaos
 
 This repository contains code and parameters for rendering
 the images published in the book "Symmetry in Chaos" (1st edition)
 by Michael Field and Martin Golubitsky.
+
+![Symmetry in Chaos - Emperor's Cloak](docs/emperors_cloak.jpg)
 
 An webpage utilizing WebAssembly for rendering in the browser can be found on the github
 page <https://sophonet.github.io/symmetryinchaos/>.
