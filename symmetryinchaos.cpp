@@ -258,7 +258,7 @@ void launch(const char *json_parameters) {
 
 int main(int argc, char *argv[]) {
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_Surface *screen = SDL_SetVideoMode(1200, 1200, 32, SDL_SWSURFACE);
+    SDL_Surface *screen = SDL_SetVideoMode(1000, 1000, 32, SDL_SWSURFACE);
     runner = new Runner(screen);
 
 #ifdef TEST_SDL_LOCK_OPTS

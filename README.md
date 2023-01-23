@@ -73,7 +73,3 @@ docker run \
 ### Dataset file
 
 The [datasets.json](datasets.json) file contains parameters for all datasets that are described in the first edition of the book. Color maps have been inspired by another software package <https://symmetrichaos.sourceforge.net/> which is now unmaintained.
-
-### Possible future extensions
-
-While the software is intended to have minimal dependencies and code size, the index.html file could be extended such that individual parameters for the images can be adjusted "live" with range controls, allowing interactive discovery of new patterns or patterns that are similar to the datasets of the book.
