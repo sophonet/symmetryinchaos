@@ -10,7 +10,7 @@
 <body style="background-color: #000;">
 
     <!-- Parameter-->
-    <div id="params" style="display: grid; grid-template-columns: 5em 3em auto; color: white;">
+    <div id="params" style="display: grid; grid-template-columns: 5em 3em auto; color: white; margin: 30px;">
         <div>dataset</div><div></div> <select name="dataset" id="dataset"></select>
         <div>lambda</div><output id="lambdavalue" for="lambda"></output> <input style="width: 100%" type="range" id="lambda" name="lambda" min="-20.0" max="20.0" step="0.01">
         <div>alpha</div><output id="alphavalue"></output><input style="width: 100%" type="range" id="alpha" name="alpha" min="-20.0" max="20.0" step="0.01">
@@ -19,12 +19,12 @@
         <div>delta</div><output id="deltavalue"></output><input style="width: 100%" type="range" id="delta" name="delta" min="-20.0" max="20.0" step="0.01">
         <div>omega</div><output id="omegavalue"></output><input style="width: 100%" type="range" id="omega" name="omega" min="-20.0" max="20.0" step="0.01">
         <div>n</div><output id="nvalue"></output><input style="width: 100%" type="range" id="n" name="n" min="3" max="40">
-        <div>p</div><output id="pvalue"></output><input style="width: 100%" type="range" id="p" name="p" min="0" max="5">
+        <div>p</div><output id="pvalue"></output><input style="width: 100%" type="range" id="p" name="p" min="0" max="40">
         <div>extent</div><output id="extentvalue"></output><input style="width: 100%" type="range" id="extent" name="extent" min="0" max="10" step="0.1">
     </div>
 
     <!-- Create the canvas that the C++ code will draw into -->
-    <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+    <canvas id="canvas" oncontextmenu="event.preventDefault()" style="margin: auto; display: block;"></canvas>
 
     <!-- Allow the C++ to access the canvas element --> 
     <script type='text/javascript'>
@@ -42,49 +42,26 @@
     <script src="index.js"></script>
     <script language="javascript">
         var symmetry_datasets = null;
+        const parameters = ["lambda", "alpha", "beta", "gamma", "delta", "omega", "n", "p", "extent"];
 
         dropdown = document.getElementById('dataset')
         dropdown.addEventListener("change", select_dataset, false);
-        document.getElementById('lambda').addEventListener("input", change_parameters, false);
-        document.getElementById('alpha').addEventListener("input", change_parameters, false);
-        document.getElementById('beta').addEventListener("input", change_parameters, false);
-        document.getElementById('gamma').addEventListener("input", change_parameters, false);
-        document.getElementById('delta').addEventListener("input", change_parameters, false);
-        document.getElementById('omega').addEventListener("input", change_parameters, false);
-        document.getElementById('n').addEventListener("input", change_parameters, false);
-        document.getElementById('p').addEventListener("input", change_parameters, false);
-        document.getElementById('extent').addEventListener("input", change_parameters, false);
-
+        parameters.forEach(parameter => {
+            document.getElementById(parameter).addEventListener("input", change_parameters, false);
+        });
+        
         function update_labels(params) {
-            console.log(params);
-            document.getElementById("lambdavalue").value = params.lambda;
-            document.getElementById("alphavalue").value = params.alpha;
-            document.getElementById("betavalue").value = params.beta;
-            document.getElementById("gammavalue").value = params.gamma;
-            document.getElementById("deltavalue").value = params.delta;
-            document.getElementById("omegavalue").value = params.omega;
-            document.getElementById("nvalue").value = params.n;
-            document.getElementById("pvalue").value = params.p;
-            document.getElementById("extentvalue").value = params.extent;
+            parameters.forEach(parameter => {
+                document.getElementById(parameter+"value").value = params[parameter];
+            })
         }
 
         function change_parameters() {
             const dataset = symmetry_datasets[dropdown.value];
-            const params = {
-                lambda: +document.getElementById('lambda').value,
-                alpha: +document.getElementById('alpha').value,
-                beta: +document.getElementById('beta').value,
-                gamma: +document.getElementById('gamma').value,
-                delta: +document.getElementById('delta').value,
-                omega: +document.getElementById('omega').value,
-                n: +document.getElementById('n').value,
-                p: +document.getElementById('p').value,
-                extent: +document.getElementById('extent').value,
-                palette: dataset.palette
-            }
-            console.log("Hallo");
-            console.log(params);
-            console.log("Huhu");
+            const params = { palette: dataset.palette };
+            parameters.forEach(parameter => {
+                params[parameter] = +document.getElementById(parameter).value;
+            });
             update_labels(params);
             try {
                 Module.ccall('launch', null, ['string'],[JSON.stringify(params)]);
@@ -96,16 +73,10 @@
 
         function select_dataset() {
             const dataset = symmetry_datasets[dropdown.value];
-            document.getElementById('lambda').value = dataset.lambda;
-            document.getElementById('alpha').value = dataset.alpha;
-            document.getElementById('beta').value = dataset.beta;
-            document.getElementById('gamma').value = dataset.gamma;
-            document.getElementById('delta').value = dataset.delta;
-            document.getElementById('omega').value = dataset.omega;
-            document.getElementById('n').value = dataset.n;
-            document.getElementById('p').value = dataset.p;
-            document.getElementById('extent').value = dataset.extent;
-            update_labels(symmetry_datasets[dropdown.value]);
+            parameters.forEach(parameter => {
+                document.getElementById(parameter).value = dataset[parameter];                
+            });
+            update_labels(dataset);
             Module.ccall('launch', null, ['string'],[JSON.stringify(dataset)]);
         };
 
