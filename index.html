@@ -10,7 +10,7 @@
 <body style="background-color: #000;">
 
     <!-- Parameter-->
-    <div id="params" style="display: grid; grid-template-columns: 5em 3em auto; color: white;">
+    <div id="params" style="display: grid; grid-template-columns: 5em 3em auto; color: white; margin: 30px;">
         <div>dataset</div><div></div> <select name="dataset" id="dataset"></select>
         <div>lambda</div><output id="lambdavalue" for="lambda"></output> <input style="width: 100%" type="range" id="lambda" name="lambda" min="-20.0" max="20.0" step="0.01">
         <div>alpha</div><output id="alphavalue"></output><input style="width: 100%" type="range" id="alpha" name="alpha" min="-20.0" max="20.0" step="0.01">
@@ -19,12 +19,12 @@
         <div>delta</div><output id="deltavalue"></output><input style="width: 100%" type="range" id="delta" name="delta" min="-20.0" max="20.0" step="0.01">
         <div>omega</div><output id="omegavalue"></output><input style="width: 100%" type="range" id="omega" name="omega" min="-20.0" max="20.0" step="0.01">
         <div>n</div><output id="nvalue"></output><input style="width: 100%" type="range" id="n" name="n" min="3" max="40">
-        <div>p</div><output id="pvalue"></output><input style="width: 100%" type="range" id="p" name="p" min="0" max="5">
+        <div>p</div><output id="pvalue"></output><input style="width: 100%" type="range" id="p" name="p" min="0" max="40">
         <div>extent</div><output id="extentvalue"></output><input style="width: 100%" type="range" id="extent" name="extent" min="0" max="10" step="0.1">
     </div>
 
     <!-- Create the canvas that the C++ code will draw into -->
-    <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+    <canvas id="canvas" oncontextmenu="event.preventDefault()" style="margin: auto; display: block;"></canvas>
 
     <!-- Allow the C++ to access the canvas element --> 
     <script type='text/javascript'>
@@ -56,7 +56,6 @@
         document.getElementById('extent').addEventListener("input", change_parameters, false);
 
         function update_labels(params) {
-            console.log(params);
             document.getElementById("lambdavalue").value = params.lambda;
             document.getElementById("alphavalue").value = params.alpha;
             document.getElementById("betavalue").value = params.beta;
@@ -82,9 +81,6 @@
                 extent: +document.getElementById('extent').value,
                 palette: dataset.palette
             }
-            console.log("Hallo");
-            console.log(params);
-            console.log("Huhu");
             update_labels(params);
             try {
                 Module.ccall('launch', null, ['string'],[JSON.stringify(params)]);
@@ -105,7 +101,7 @@
             document.getElementById('n').value = dataset.n;
             document.getElementById('p').value = dataset.p;
             document.getElementById('extent').value = dataset.extent;
-            update_labels(symmetry_datasets[dropdown.value]);
+            update_labels(dataset);
             Module.ccall('launch', null, ['string'],[JSON.stringify(dataset)]);
         };
 
